@@ -1,13 +1,13 @@
 import React from "react";
 import { Box } from "@mui/material";
 
-const Header: React.FC = () => {
+const ActivityArea: React.FC = () => {
   return (
     <Box>
-      
+      Test
     </Box>
     
   );
 };
 
-export default Header;
+export default ActivityArea;

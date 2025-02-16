@@ -46,7 +46,7 @@ const Login: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#E3F2FD", // Light blue background
         overflow: "hidden",
       }}
     >
@@ -59,12 +59,12 @@ const Login: React.FC = () => {
           alignItems: "center",
           padding: 3,
           borderRadius: 2,
-          boxShadow: 3,
+          boxShadow: "0px 4px 10px rgba(25, 118, 210, 0.3)", // Blue shadow
           backgroundColor: "white",
           maxWidth: 360,
         }}
       >
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography variant="h5" align="center" gutterBottom sx={{ color: "#1976D2" }}>
           Login
         </Typography>
         <TextField
@@ -73,7 +73,14 @@ const Login: React.FC = () => {
           fullWidth
           value={phoneNum}
           onChange={(e) => setPhoneNum(e.target.value)}
-          sx={{ mb: 2 }}
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "#1976D2" },
+              "&:hover fieldset": { borderColor: "#1565C0" },
+              "&.Mui-focused fieldset": { borderColor: "#0D47A1" },
+            },
+          }}
         />
         <TextField
           label="Password"
@@ -82,13 +89,24 @@ const Login: React.FC = () => {
           fullWidth
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          sx={{ mb: 2 }}
+          sx={{
+            mb: 2,
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "#1976D2" },
+              "&:hover fieldset": { borderColor: "#1565C0" },
+              "&.Mui-focused fieldset": { borderColor: "#0D47A1" },
+            },
+          }}
         />
         <Button
           variant="contained"
-          color="primary"
           fullWidth
           onClick={handleLogin}
+          sx={{
+            backgroundColor: "#1976D2",
+            color: "white",
+            "&:hover": { backgroundColor: "#1565C0" },
+          }}
         >
           Login
         </Button>
@@ -100,10 +118,18 @@ const Login: React.FC = () => {
             width: "100%",
           }}
         >
-          <Link href="/register" variant="body2">
+          <Link
+            href="/register"
+            variant="body2"
+            sx={{ color: "#0D47A1", "&:hover": { color: "#1565C0" } }}
+          >
             Register
           </Link>
-          <Link href="/forgot-password" variant="body2">
+          <Link
+            href="/forgot-password"
+            variant="body2"
+            sx={{ color: "#0D47A1", "&:hover": { color: "#1565C0" } }}
+          >
             Forgot Password?
           </Link>
         </Box>

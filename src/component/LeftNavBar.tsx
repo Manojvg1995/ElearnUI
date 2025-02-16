@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+import { List, ListItem, ListItemText, ListItemButton, Divider, Box } from "@mui/material";
+
+const menuItems = ["Dashboard", "Courses", "Profile", "Logout"];
 
 const LeftNavBar: React.FC = () => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+
+  const handleListItemClick = (index: number) => {
+    setSelectedIndex(index);
+  };
+
   return (
-    <nav className="w-64 h-screen bg-blue-900 text-white p-6 fixed">
-      <h2 className="text-xl font-bold mb-6">Menu</h2>
-      <ul>
-        <li className="mb-4 p-3 hover:bg-blue-700 rounded cursor-pointer">Dashboard</li>
-        <li className="mb-4 p-3 hover:bg-blue-700 rounded cursor-pointer">Courses</li>
-        <li className="mb-4 p-3 hover:bg-blue-700 rounded cursor-pointer">Quizzes</li>
-        <li className="mb-4 p-3 hover:bg-blue-700 rounded cursor-pointer">Settings</li>
-      </ul>
-    </nav>
+    <Box>
+      <List>
+        {menuItems.map((text, index) => (
+          <React.Fragment key={text}>
+            <ListItem disablePadding>
+              <ListItemButton
+                selected={selectedIndex === index}
+                onClick={() => handleListItemClick(index)}
+                sx={{
+                  backgroundColor: selectedIndex === index ? "rgba(255,255,255,0.15)" : "transparent", // Darker selection
+                  "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" }, // Lighter hover effect
+                  "&.Mui-selected": { backgroundColor: "rgba(255,255,255,0.2) !important" }, // Slightly darker selected state
+                  "&.Mui-selected:hover": { backgroundColor: "rgba(255,255,255,0.25) !important" }, // Darker hover for selected
+                }}
+              >
+                <ListItemText primary={text} sx={{ color: "white" }} />
+              </ListItemButton>
+            </ListItem>
+            {index < menuItems.length - 1 && <Divider sx={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} />} {/* Darker divider */}
+          </React.Fragment>
+        ))}
+      </List>
+    </Box>
   );
 };
 
