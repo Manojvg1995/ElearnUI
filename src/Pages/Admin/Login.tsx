@@ -8,15 +8,17 @@ import {
   Link,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Login: React.FC = () => {
   const [phoneNum, setPhoneNum] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-
+  
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost/elearnapi/login.php", {
+      const url = `${API_BASE_URL}login.php`;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
