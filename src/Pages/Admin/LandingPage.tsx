@@ -25,49 +25,52 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { styled } from "@mui/system";
 import AddIcon from '@mui/icons-material/Add';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { useNavigate } from "react-router-dom";
+import { setQuizId } from "../../redux/quizSlice";
+import { useDispatch } from "react-redux";
+
 const Container = styled(Box)({
-  padding: "10px 5px", // Reduced padding
-  maxWidth: "1000px", // Reduced max width
+  padding: "10px 5px",
+  maxWidth: "1000px",
   margin: "auto",
 });
 
 const AddButton = styled(Button)({
-  marginBottom: "8px", // Reduced margin
+  marginBottom: "8px",
   backgroundColor: "#3f51b5",
   color: "#fff",
-  padding: "6px 12px", // Reduced padding
-  borderRadius: "6px", // Reduced border radius
+  padding: "6px 12px",
+  borderRadius: "6px",
   "&:hover": {
     backgroundColor: "#303f9f",
   },
 });
 
 const SearchInput = styled(TextField)({
-  marginBottom: "10px", // Reduced margin
+  marginBottom: "10px",
   width: "100%",
   "& .MuiInputBase-root": {
-    borderRadius: "6px", // Reduced border radius
+    borderRadius: "6px",
     backgroundColor: "#f5f5f5",
-    paddingLeft: "10px", // Reduced padding
+    paddingLeft: "10px",
   },
 });
 
 const TableStyled = styled(Table)({
-  minWidth: "600px", // Reduced min width
+  minWidth: "600px",
   backgroundColor: "#fff",
 });
 
 const TableCellStyled = styled(TableCell)({
   fontWeight: 600,
-  padding: "6px", // Reduced padding
-  fontSize: "12px", // Reduced font size
+  padding: "6px",
+  fontSize: "12px",
   color: "#333",
 });
 
 const TableHeadStyled = styled(TableHead)({
   backgroundColor: "#f5f5f5",
-  borderBottom: "1px solid #ddd", // Reduced border size
+  borderBottom: "1px solid #ddd",
 });
 
 const TableRowStyled = styled(TableRow)({
@@ -77,7 +80,7 @@ const TableRowStyled = styled(TableRow)({
 });
 
 const TableContainerStyled = styled(TableContainer)({
-  maxHeight: "350px", // Reduced height
+  maxHeight: "350px",
 });
 
 interface Quiz {
@@ -90,6 +93,8 @@ interface Quiz {
 }
 
 const LandingPage: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<keyof Quiz>("quiz_title");
@@ -111,8 +116,7 @@ const LandingPage: React.FC = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const getQuizUrl = `${API_BASE_URL}getQuiz.php`;
-      const response = await fetch(getQuizUrl, {
+      const response = await fetch("http://localhost/elearnapi/getQuiz.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "ALL" }),
@@ -145,15 +149,13 @@ const LandingPage: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const addOrUpdateUrl = `${API_BASE_URL}addOrUpdateQuiz.php`;
-      const response = await fetch(addOrUpdateUrl, {
+      const response = await fetch("http://localhost/elearnapi/addOrUpdateQuiz.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await response.json();
       if (data.code === 200) {
-        console.log(data.message);
         fetchQuizzes(); // Refresh list
         setOpen(false);
       } else {
@@ -186,6 +188,11 @@ const LandingPage: React.FC = () => {
   const filteredQuizzes = quizzes.filter((quiz) =>
     quiz.quiz_title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const updateQuestionToQuiz = (quizId: any) => {
+    dispatch(setQuizId(quizId));
+    navigate("/addQuetionsToQuiz");
+  };
 
   const sortedQuizzes = [...filteredQuizzes].sort((a, b) => {
     const isAsc = sortOrder === "asc";
@@ -252,9 +259,10 @@ const LandingPage: React.FC = () => {
                 <TableCell>{quiz.quiz_createddate}</TableCell>
                 <TableCell>{quiz.quiz_exp_date || "N/A"}</TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={handleAdd}>
+                  <IconButton color="primary" onClick={() => updateQuestionToQuiz(quiz.quiz_id)}>
                     <AddIcon />
                   </IconButton>
+
                   <IconButton color="primary" onClick={() => handleEdit(quiz)}>
                     <EditIcon />
                   </IconButton>
@@ -296,7 +304,8 @@ const LandingPage: React.FC = () => {
               label="Quiz Expiry Date"
               value={formData.quiz_exp_date ? new Date(formData.quiz_exp_date) : null}
               onChange={(date) => setFormData({ ...formData, quiz_exp_date: date?.toISOString() || "" })}
-              format="yyyy/MM/dd"
+              format="MM/dd/yyyy"
+              renderInput={(params) => <TextField {...params} fullWidth margin="dense" />}
             />
           </LocalizationProvider>
         </DialogContent>
@@ -305,7 +314,7 @@ const LandingPage: React.FC = () => {
             Cancel
           </Button>
           <Button onClick={handleSave} color="primary">
-            {formData.quiz_id ? "Update" : "Add"}
+            Save
           </Button>
         </DialogActions>
       </Dialog>
