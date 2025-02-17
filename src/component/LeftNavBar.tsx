@@ -1,39 +1,32 @@
-import React, { useState } from "react";
-import { List, ListItem, ListItemText, ListItemButton, Divider, Box } from "@mui/material";
+import React from "react";
+import { List, ListItemButton, ListItemText } from "@mui/material";
 
-const menuItems = ["Dashboard", "Courses", "Profile", "Logout"];
+interface LeftNavBarProps {
+  selectedContent: string;
+  onContentChange: (content: string) => void;
+}
 
-const LeftNavBar: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
-
-  const handleListItemClick = (index: number) => {
-    setSelectedIndex(index);
-  };
+const LeftNavBar: React.FC<LeftNavBarProps> = ({ selectedContent, onContentChange }) => {
+  const menuItems = ["Dashboard", "Users", "Settings", "Reports"];
 
   return (
-    <Box>
-      <List>
-        {menuItems.map((text, index) => (
-          <React.Fragment key={text}>
-            <ListItem disablePadding>
-              <ListItemButton
-                selected={selectedIndex === index}
-                onClick={() => handleListItemClick(index)}
-                sx={{
-                  backgroundColor: selectedIndex === index ? "rgba(255,255,255,0.15)" : "transparent", // Darker selection
-                  "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" }, // Lighter hover effect
-                  "&.Mui-selected": { backgroundColor: "rgba(255,255,255,0.2) !important" }, // Slightly darker selected state
-                  "&.Mui-selected:hover": { backgroundColor: "rgba(255,255,255,0.25) !important" }, // Darker hover for selected
-                }}
-              >
-                <ListItemText primary={text} sx={{ color: "white" }} />
-              </ListItemButton>
-            </ListItem>
-            {index < menuItems.length - 1 && <Divider sx={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }} />} {/* Darker divider */}
-          </React.Fragment>
-        ))}
-      </List>
-    </Box>
+    <List>
+      {menuItems.map((item) => (
+        <ListItemButton
+          key={item}
+          onClick={() => onContentChange(item)}
+          sx={{
+            backgroundColor: selectedContent === item ? "rgba(255, 255, 255, 0.2)" : "transparent",
+            color: "white",
+            "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.3)" },
+            borderRadius: "8px",
+            margin: "5px",
+          }}
+        >
+          <ListItemText primary={item} />
+        </ListItemButton>
+      ))}
+    </List>
   );
 };
 

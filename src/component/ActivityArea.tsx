@@ -1,12 +1,23 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import LandingPage from "../Pages/Admin/landingPage";
 
-const ActivityArea: React.FC = () => {
+interface ActivityAreaProps {
+  selectedContent: string;
+}
+
+const ActivityArea: React.FC<ActivityAreaProps> = ({ selectedContent }) => {
   return (
     <Box>
-      Test
+      <Typography variant="h4" sx={{ marginBottom: "20px" }}>
+        {selectedContent}
+      </Typography>
+
+      {selectedContent === "Dashboard" && <LandingPage/>}
+      {selectedContent === "Users" && <Typography>Manage Users here.</Typography>}
+      {selectedContent === "Settings" && <Typography>Adjust your Settings here.</Typography>}
+      {selectedContent === "Reports" && <Typography>View Reports here.</Typography>}
     </Box>
-    
   );
 };
 

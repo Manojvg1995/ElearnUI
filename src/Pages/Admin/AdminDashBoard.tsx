@@ -6,11 +6,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LeftNavBar from "../../component/LeftNavBar";
 import ActivityArea from "../../component/ActivityArea";
 
-const drawerWidth = 250; // Sidebar width
-const navBarHeight = 64; // Standard Navbar height
+const drawerWidth = 250;
+const navBarHeight = 64;
 
 const AdminDashBoard: React.FC = () => {
-  const [open, setOpen] = useState<boolean>(true); // Sidebar open by default
+  const [open, setOpen] = useState<boolean>(true);
+  const [selectedContent, setSelectedContent] = useState<string>("Dashboard"); // Default selection
 
   const toggleDrawer = () => {
     setOpen((prev) => !prev);
@@ -19,8 +20,6 @@ const AdminDashBoard: React.FC = () => {
   return (
     <>
       <CssBaseline />
-
-      {/* Top Navigation Bar */}
       <AppBar
         position="fixed"
         sx={{
@@ -28,14 +27,13 @@ const AdminDashBoard: React.FC = () => {
           color: "#000",
           zIndex: 1201,
           width: "100%", 
-          transform: open ? `translateX(${drawerWidth}px)` : "translateX(0)", // Smooth shift
-          transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)", // Smooth animation
+          transform: open ? `translateX(${drawerWidth}px)` : "translateX(0)",
+          transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
           height: `${navBarHeight}px`,
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
         <Toolbar sx={{ minHeight: `${navBarHeight}px` }}>
-          {/* Menu Button */}
           <IconButton
             onClick={toggleDrawer}
             sx={{
@@ -48,7 +46,6 @@ const AdminDashBoard: React.FC = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Left Sidebar (Drawer) */}
       <Drawer
         variant="persistent"
         anchor="left"
@@ -65,12 +62,11 @@ const AdminDashBoard: React.FC = () => {
             zIndex: 1200,
             backgroundColor: "#1976d2",
             color: "white",
-            transition: "transform 1s cubic-bezier(0.4, 0, 0.2, 1)", // Smooth opening
-            transform: open ? "translateX(0)" : `translateX(-${drawerWidth}px)`, // Hide sidebar
+            transition: "transform 1s cubic-bezier(0.4, 0, 0.2, 1)",
+            transform: open ? "translateX(0)" : `translateX(-${drawerWidth}px)`,
           },
         }}
       >
-        {/* Sidebar Header with Elearn Title */}
         <Box
           sx={{
             textAlign: "center",
@@ -83,20 +79,25 @@ const AdminDashBoard: React.FC = () => {
         </Box>
         <Divider sx={{ backgroundColor: "rgba(255,255,255,0.3)" }} />
         <Box role="presentation">
-          <LeftNavBar />
+          <LeftNavBar 
+            selectedContent={selectedContent} 
+            onContentChange={setSelectedContent} 
+          />
         </Box>
       </Drawer>
 
-      {/* Main Content Area */}
+      {/* Container for ActivityArea - Fixed to Top-Left */}
       <Box
         sx={{
-          transform: open ? `translateX(${drawerWidth}px)` : "translateX(0)", // Move smoothly
-          transition: "transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)", // Smooth effect
-          marginTop: `${navBarHeight}px`,
-          padding: "20px",
+          position: "absolute",
+          top: `${navBarHeight}px`,
+          left: open ? `${drawerWidth}px` : "0px",
+          transition: "left 0.4s ease",
+          width: open ? `calc(100% - ${drawerWidth}px)` : "100%",
+          padding: "10px",
         }}
       >
-        <ActivityArea />
+        <ActivityArea selectedContent={selectedContent} />
       </Box>
     </>
   );
