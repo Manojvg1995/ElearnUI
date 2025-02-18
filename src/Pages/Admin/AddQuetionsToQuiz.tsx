@@ -220,17 +220,6 @@ const AddQuestionsToQuiz = () => {
           )
         )}
 
-        {/* Display selected question */}
-        {selectedQuestion && (
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="h6">Selected Question</Typography>
-            <Typography>Q{selectedQuestion.id}: {selectedQuestion.text}</Typography>
-            <Typography variant="subtitle1">Options</Typography>
-            {selectedQuestion.options.map((option, index) => (
-              <Typography key={index}>- {option.text}</Typography>
-            ))}
-          </Box>
-        )}
       </Box>
     </Box>
   );
