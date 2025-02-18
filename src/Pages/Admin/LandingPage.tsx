@@ -305,7 +305,7 @@ const LandingPage: React.FC = () => {
               value={formData.quiz_exp_date ? new Date(formData.quiz_exp_date) : null}
               onChange={(date) => setFormData({ ...formData, quiz_exp_date: date?.toISOString() || "" })}
               format="MM/dd/yyyy"
-              renderInput={(params) => <TextField {...params} fullWidth margin="dense" />}
+              renderInput={(params:any) => <TextField {...params} fullWidth margin="dense" />}
             />
           </LocalizationProvider>
         </DialogContent>

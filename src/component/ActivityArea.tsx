@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import LandingPage from "../Pages/Admin/landingPage";
+import LandingPage from "../Pages/Admin/LandingPage";
 
 interface ActivityAreaProps {
   selectedContent: string;
