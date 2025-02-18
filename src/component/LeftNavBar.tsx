@@ -7,7 +7,7 @@ interface LeftNavBarProps {
 }
 
 const LeftNavBar: React.FC<LeftNavBarProps> = ({ selectedContent, onContentChange }) => {
-  const menuItems = ["Dashboard", "Users", "Settings", "Reports"];
+  const menuItems = ["Dashboard", "Student", "Settings", "Reports"];
 
   return (
     <List>

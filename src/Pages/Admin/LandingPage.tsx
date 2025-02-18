@@ -7,7 +7,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Button,
   TableSortLabel,
   TablePagination,
@@ -17,7 +16,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -28,7 +26,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 import { setQuizId } from "../../redux/quizSlice";
 import { useDispatch } from "react-redux";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Container = styled(Box)({
   padding: "10px 5px",
   maxWidth: "1000px",
@@ -116,7 +114,7 @@ const LandingPage: React.FC = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const response = await fetch("http://localhost/elearnapi/getQuiz.php", {
+      const response = await fetch(`${API_BASE_URL}getQuiz.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "ALL" }),
@@ -149,7 +147,7 @@ const LandingPage: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch("http://localhost/elearnapi/addOrUpdateQuiz.php", {
+      const response = await fetch(`${API_BASE_URL}addOrUpdateQuiz.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -305,7 +303,15 @@ const LandingPage: React.FC = () => {
               value={formData.quiz_exp_date ? new Date(formData.quiz_exp_date) : null}
               onChange={(date) => setFormData({ ...formData, quiz_exp_date: date?.toISOString() || "" })}
               format="MM/dd/yyyy"
-              renderInput={(params:any) => <TextField {...params} fullWidth margin="dense" />}
+              slots={{
+                textField: TextField,  // Override the default TextField
+              }}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: 'dense',  // Custom props for the TextField
+                },
+              }}
             />
           </LocalizationProvider>
         </DialogContent>

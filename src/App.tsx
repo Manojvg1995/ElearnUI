@@ -3,6 +3,7 @@ import { Box, CssBaseline } from "@mui/material";
 import Login from "./Pages/Admin/Login";
 import AdminDashBoard from "./Pages/Admin/AdminDashBoard";
 import AddQuetionsToQuiz from "./Pages/Admin/AddQuetionsToQuiz";
+import StudentList from "./Pages/Admin/Student";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/adminDashBoardPage" element={<AdminDashBoard />} />
           <Route path="/addQuetionsToQuiz" element={<AddQuetionsToQuiz />} />
+          <Route path="/adminStudentList" element={<StudentList />} />
         </Routes>
       </Router>
     </Box>
