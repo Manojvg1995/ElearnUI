@@ -129,37 +129,49 @@ const AddQuestionsToQuiz = () => {
           </Typography>
           <Divider />
           <List sx={{ overflowY: "auto", maxHeight: "calc(100vh - 160px)" }}>
-            {questions.length === 0 ? (
-              <Typography sx={{ p: 2, textAlign: "center" }}>No Questions Added</Typography>
-            ) : (
-              questions.map((q) => (
-                <ListItem
-                  key={q.id}
-                  button
-                  onClick={() => handleSelectQuestion(q)}
-                >
-                  <ListItemText
-                    primary={`Q${q.id}: ${q.text}`}
-                    sx={{
-                      maxWidth: "200px", // Set a maximum width for the text container
-                      overflow: "hidden", // Hide overflowed text
-                      textOverflow: "ellipsis", // Add ellipsis for overflow text
-                      whiteSpace: "nowrap", // Prevent text from wrapping
-                    }}
-                  />
-                  <MuiIconButton onClick={() => handleDeleteQuestion(q.id)} edge="end">
-                    <DeleteIcon />
-                  </MuiIconButton>
-                </ListItem>
-              ))
-            )}
-          </List>
-
+    {questions.length === 0 ? (
+      <Typography sx={{ p: 2, textAlign: "center" }}>No Questions Added</Typography>
+    ) : (
+      questions.map((q) => (
+        <ListItem
+          key={q.id}
+          component="button" // Use the component prop to make it a button
+          onClick={() => handleSelectQuestion(q)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            textAlign: "left",
+            width: "100%",
+          }}
+        >
+          <ListItemText
+            primary={`Q${q.id}: ${q.text}`}
+            sx={{
+              maxHeight: "40px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          />
+          <MuiIconButton
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent the ListItem onClick from firing
+              handleDeleteQuestion(q.id);
+            }}
+            edge="end"
+          >
+            <DeleteIcon />
+          </MuiIconButton>
+        </ListItem>
+      ))
+    )}
+    </List>
         </Box>
       </Drawer>
 
       {/* Main Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: `${drawerWidth}px`, mt: "64px" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: "64px", ml: `${drawerWidth}px`, width: `calc(100% - ${drawerWidth}px)` }}>
+
         <Typography variant="h5" sx={{ mb: 2 }}>Add Question to Quiz</Typography>
         <TextField
           label="Enter Question"
